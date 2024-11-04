@@ -1,0 +1,133 @@
+<html>
+<head>
+<title> Card </title>
+</head>
+<style>
+.users-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.user-container {
+  position: relative;
+  width: 200px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #FAFBF6;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 1;
+  transition: opacity 0.5s ease; /* Added transition for fade-out */
+}
+
+.user-container:nth-child(even):hover {
+  transform: translateY(-10px) scale(1.05) rotate(-5deg);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.user-container:nth-child(odd):hover {
+  transform: translateY(-10px) scale(1.05) rotate(5deg);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.user-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+.user-details {
+  margin-top: 10px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 10px 0 5px;
+}
+
+.user-email,
+.user-age,
+.user-info {
+  font-size: 0.9em;
+  color: #000;
+}
+
+.btn-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5em;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-close::before {
+  content: "×";
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease; /* Fades out over 0.5s */
+}
+</style>
+
+<div class="users-container"></div>
+
+<template id="user-template">
+  <div class="user-container">
+    <img src="" alt="User Image" class="user-image" />
+    <div class="user-details">
+      <h2 class="user-name">Name</h2>
+      <p class="user-email">Email</p>
+      <p class="user-age">Age</p>
+      <p class="user-info">info</p>
+    </div>
+
+    <a class="btn-close"></a>
+  </div>
+</template>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const users = [
+    { name: "John Doe", age: "28 years old", info: "A passionate wildlife enthusiast and photographer, often found exploring nature.", img: "https://images.unsplash.com/photo-1597953601374-1ff2d5640c85?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Jane Smith", email: "janesmith@example.com", info: "An avid reader and aspiring novelist, jane loves spending her weekends at local cafes.", img: "https://images.unsplash.com/photo-1521566652839-697aa473761a?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Mike Brown", email: "mikebrown@example.com", age: "45 years old", info: "Tech savy and innovative, he is know for his cutting edge software solutions", img: "https://plus.unsplash.com/premium_photo-1689977927774-401b12d137d6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Sarah Johnson", email: "Sarahjohnson@example.com", age: "30 years old", info: "A fitness enthiusiat, Sarah enjoys hiking and participating in marathons",img: "https://plus.unsplash.com/premium_photo-1684315354193-1bdd8a54c81f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Alex Martinez", email: "Alexmartinez@example.com", age: "27 years old", img: "https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }
+  ];
+
+  const container = document.querySelector(".users-container");
+  const template = document.getElementById("user-template");
+
+  users.forEach(user => {
+    const userClone = template.content.cloneNode(true);
+    userClone.querySelector(".user-name").textContent = user.name;
+    userClone.querySelector(".user-email").textContent = user.email;
+    userClone.querySelector(".user-age").textContent = user.age;
+    userClone.querySelector(".user-info").textContent = user.info;
+    userClone.querySelector(".user-image").src = user.img;
+
+    // Close button functionality with fade-out effect
+    const closeButton = userClone.querySelector(".btn-close");
+    closeButton.addEventListener("click", (e) => {
+      const card = e.target.closest(".user-container");
+      card.classList.add("fade-out"); // Add fade-out class
+      setTimeout(() => {
+        card.remove(); // Remove element after animation completes
+      }, 500); // Match timeout to the CSS transition duration
+    });
+
+    container.appendChild(userClone);
+  });
+});
+</script>
+
+</html>
